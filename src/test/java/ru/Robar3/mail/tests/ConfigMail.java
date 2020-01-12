@@ -4,22 +4,38 @@ package ru.Robar3.mail.tests;
 import ru.Robar3.mail.pageObject.LoginPage;
 import ru.Robar3.mail.pageObject.MailPage;
 
-//login vanya.test.ivan@mail.ru
-//пароль test1test
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 
 public class ConfigMail {
 
+    public static String password;
+    public static String password2;
+
     public String email = "vanya.test.ivan@mail.ru";
-    public String password = "test1test";
+
     public String text = "Hello,it is test";
     public String email2 = "ivan.test68@mail.ru";
-    public String password2 = "test2test";
+
     MailPage mailPage = new MailPage();
     LoginPage loginPage =new LoginPage();
 
 
 
     public void test2Login() {
+        FileInputStream fis;
+        Properties property = new Properties();
+
+        try{
+            fis = new FileInputStream("src/main/resources/Config.properties");
+            property.load(fis);
+            password = property.getProperty("pass1");
+            password2 =property.getProperty("pass2");
+        }catch (IOException e) {
+            System.err.println("ОШИБКА: Файл свойств отсуствует!");
+        }
         loginPage.login(email, password);
     }
 
