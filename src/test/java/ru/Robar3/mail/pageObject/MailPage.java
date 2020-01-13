@@ -5,44 +5,60 @@ import com.codeborne.selenide.SelenideElement;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Selectors.byTitle;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MailPage {
 
-    static String dateIdSendEmail;
-    public void clickWriteMail(){
+    private static String dateIdSendEmail;
 
-        $(By.className("compose-button__wrapper")).shouldBe(Condition.visible).click();
+    private By writeMail = byClassName("compose-button__wrapper");
+    private By setEmail =byClassName("container--zU301");
+    private By div = By.tagName("div");
+    private By sendPanelFind = byClassName("compose-app__buttons");
+    private By messegeIsSend = byClassName("layer__header");
+    private By closeSend = byClassName("layer__controls");
+    private By sendsEmail = byLinkText("Отправленные");
+    private By exit = byTitle("выход");
+
+    String timeSent = "[class='letter__date']";
+    String autorSent = "[class='letter__contact-item']";
+    String title = "title";
+    String firstLetter = "[title^='Сегодня']";
+    String send = "[title='Отправить']";
+    String textEmail = "[class^='editable-container-']";
+    public void clickWriteMail(){
+        $(writeMail).shouldBe(Condition.visible).click();
     }
     public void writeLetter(String email,String text){
-        $(By.cssSelector("[title='Отправить']")).shouldBe(Condition.visible);
-        $(By.className("container--zU301")).shouldBe(Condition.visible).sendKeys(email);
-        SelenideElement textPanel = $(("[class^='editable-container-']"));
-        SelenideElement webElement = textPanel.$(By.tagName("div"));
-        webElement.$(By.tagName("div")).sendKeys(text);
+        $(send).shouldBe(Condition.visible);
+        $(setEmail).shouldBe(Condition.visible).sendKeys(email);
+        SelenideElement textPanel = $(textEmail);
+        SelenideElement webElement = textPanel.$(div);
+        webElement.$(div).sendKeys(text);
     }
     public void sendAndClose(){
-        SelenideElement sendPanel = $(By.className("compose-app__buttons")).shouldBe(Condition.visible);
-        sendPanel.$(("[title='Отправить']")).click();
-        String send = $(By.className("layer__header")).shouldBe(Condition.visible).getText();
-        Assert.assertEquals(send,"Письмо отправлено");
-        $(By.className("layer__controls")).shouldBe(Condition.visible).click();
+        SelenideElement sendPanel = $(sendPanelFind).shouldBe(Condition.visible);
+        sendPanel.$(send).click();
+        String sendMessage = $(messegeIsSend).shouldBe(Condition.visible).getText();
+        Assert.assertEquals(sendMessage,"Письмо отправлено");
+        $(closeSend).shouldBe(Condition.visible).click();
 
     }
     public void checkDate(){
-        $(By.linkText("Отправленные")).shouldBe(Condition.visible).click();
-        dateIdSendEmail = $("[title^='Сегодня']")
-                .shouldBe(Condition.visible).getAttribute("title");
+        $(sendsEmail).shouldBe(Condition.visible).click();
+        dateIdSendEmail = $(firstLetter)
+                .shouldBe(Condition.visible).getAttribute(title);
     }
     public void exitMail(){
-        $(byTitle("выход")).shouldBe(Condition.visible).click();
+        $(exit).shouldBe(Condition.visible).click();
 
     }
     public  void assertGetMail(String email){
-        $(By.cssSelector("[title^='Сегодня']")).shouldBe(Condition.visible).click();
-        String autorEmail = $(("[class='letter__contact-item']")).shouldBe(Condition.visible).getAttribute("title");
-        String timeEmail = $(("[class='letter__date']")).getText();
+        $(firstLetter).shouldBe(Condition.visible).click();
+        String autorEmail = $(autorSent)
+                .shouldBe(Condition.visible).getAttribute(title);
+        String timeEmail = $(timeSent).getText();
         Assert.assertEquals(dateIdSendEmail, timeEmail);
         Assert.assertEquals(email, autorEmail);
     }

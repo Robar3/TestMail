@@ -9,17 +9,30 @@ import org.openqa.selenium.Keys;
 import static com.codeborne.selenide.Selenide.*;
 
 
-public class LoginPage{
-    public void login(String login,String pass){
-        SelenideElement loginField =  $(By.id("mailbox:login"));
-        while (loginField.val().length() != 0)
-            loginField.sendKeys(Keys.BACK_SPACE);
-        $(By.id("mailbox:login")).sendKeys(login);
-        $(By.id("mailbox:submit")).click();
-        $(By.id("mailbox:password")).sendKeys(pass);
-        $(By.id("mailbox:submit")).click();
-        $("[title='Облако']").shouldBe(Condition.visible);
-        String a = $(By.id("PH_user-email")).shouldBe(Condition.visible).getText();
-        Assert.assertEquals(a,login);
+public class LoginPage {
+
+    private By loginField = By.id("mailbox:login");
+    private By submit = By.id("mailbox:submit");
+    private By password = By.id("mailbox:password");
+    private By loginedEmail = By.id("PH_user-email");
+    String cloud = "[title='Облако']";
+
+    public void loginWriteEmail(String login) {
+        SelenideElement delText = $(loginField);
+        while ($(loginField).val().length() != 0)
+            delText.sendKeys(Keys.BACK_SPACE);
+        $(loginField).sendKeys(login);
+        $(submit).click();
+    }
+
+    public void loginWritePass(String pass) {
+        $(password).sendKeys(pass);
+        $(submit).click();
+    }
+
+    public void assertLogined(String login) {
+        $(cloud).shouldBe(Condition.visible);
+        String a = $(loginedEmail).shouldBe(Condition.visible).getText();
+        Assert.assertEquals(a, login);
     }
 }
