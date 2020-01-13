@@ -15,7 +15,6 @@ public class LoginPage {
     private By submit = By.id("mailbox:submit");
     private By password = By.id("mailbox:password");
     private By loginedEmail = By.id("PH_user-email");
-    String cloud = "[title='Облако']";
 
     public void loginWriteEmail(String login) {
         SelenideElement delText = $(loginField);
@@ -31,7 +30,6 @@ public class LoginPage {
     }
 
     public void assertLogined(String login) {
-        $(cloud).shouldBe(Condition.visible);
         String a = $(loginedEmail).shouldBe(Condition.visible).getText();
         Assert.assertEquals(a, login);
     }
