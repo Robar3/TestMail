@@ -12,12 +12,12 @@ import static com.codeborne.selenide.Selenide.open;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class TestFirefox {
+public class TestOpera {
 
 
     @BeforeClass
     public static void setUpOpera() {
-        Configuration.browser = "firefox";
+        Configuration.browser = "opera";
         open("https://mail.ru/");
 
     }

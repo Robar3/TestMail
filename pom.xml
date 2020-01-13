@@ -51,10 +51,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
-
                     <forkCount>2</forkCount>
-
-
                 </configuration>
             </plugin>
         </plugins>

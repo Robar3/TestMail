@@ -18,6 +18,7 @@ public class LoginPage{
         $(By.id("mailbox:submit")).click();
         $(By.id("mailbox:password")).sendKeys(pass);
         $(By.id("mailbox:submit")).click();
+        $("[title='Облако']").shouldBe(Condition.visible);
         String a = $(By.id("PH_user-email")).shouldBe(Condition.visible).getText();
         Assert.assertEquals(a,login);
     }
